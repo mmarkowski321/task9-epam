@@ -1,0 +1,105 @@
+resource "azurerm_public_ip" "afw_pip" {
+  name                = local.afw_pip_name
+  location            = var.location
+  resource_group_name = var.rg_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_subnet" "afw_subnet" {
+  name                 = "AzureFirewallSubnet"
+  resource_group_name  = var.rg_name
+  virtual_network_name = var.vnet_name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azurerm_firewall" "afw" {
+  name                = local.afw_name
+  location            = var.location
+  resource_group_name = var.rg_name
+  sku_name            = "AZFW_VNet"
+  sku_tier            = "Standard"
+
+  ip_configuration {
+    name                 = "configuration"
+    subnet_id            = azurerm_subnet.afw_subnet.id
+    public_ip_address_id = azurerm_public_ip.afw_pip.id
+  }
+}
+
+resource "azurerm_route_table" "afw_rt" {
+  name                = local.afw_rt_name
+  location            = var.location
+  resource_group_name = var.rg_name
+}
+
+resource "azurerm_route" "afw_default_route" {
+  name                    = "egress-via-firewall"
+  resource_group_name     = var.rg_name
+  route_table_name        = azurerm_route_table.afw_rt.name
+  address_prefix          = "0.0.0.0/0"
+  next_hop_type           = "VirtualAppliance"
+  next_hop_in_ip_address  = azurerm_firewall.afw.ip_configuration[0].private_ip_address
+}
+
+resource "azurerm_subnet_route_table_association" "aks_snet_association" {
+  subnet_id      = var.aks_subnet_id
+  route_table_id = azurerm_route_table.afw_rt.id
+}
+
+resource "azurerm_firewall_application_rule_collection" "app_rules" {
+  name                = "appRules"
+  azure_firewall_name = azurerm_firewall.afw.name
+  resource_group_name = var.rg_name
+  priority            = 100
+  action              = "Allow"
+
+  rule {
+    name             = "AllowMicrosoftUpdates"
+    source_addresses = ["*"]
+    target_fqdns     = ["*.microsoft.com"]
+
+    protocol {
+      port = 443
+      type = "Https"
+    }
+  }
+}
+
+resource "azurerm_firewall_network_rule_collection" "net_rules" {
+  name                = "netRules"
+  azure_firewall_name = azurerm_firewall.afw.name
+  resource_group_name = var.rg_name
+  priority            = 200
+  action              = "Allow"
+
+  rule {
+    name                  = "AllowDNS"
+    source_addresses      = ["*"]
+    destination_addresses = ["*"]
+    destination_ports     = ["53"]
+    protocols             = ["UDP"]
+  }
+}
+
+resource "azurerm_firewall_nat_rule_collection" "nat_rules" {
+  name                = "natRules"
+  azure_firewall_name = azurerm_firewall.afw.name
+  resource_group_name = var.rg_name
+  priority            = 300
+  action              = "Dnat"
+
+  rule {
+    name                  = "nginx"
+    source_addresses      = ["*"]
+    destination_addresses = [azurerm_public_ip.afw_pip.ip_address]
+    destination_ports     = ["80"]
+    protocols             = ["TCP"]
+    translated_address    = var.aks_private_ip
+    translated_port       = 80
+  }
+}
