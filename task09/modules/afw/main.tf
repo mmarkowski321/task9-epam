@@ -38,7 +38,7 @@ resource "azurerm_route_table" "afw_rt" {
 }
 
 resource "azurerm_route" "afw_default_route" {
-  name                   = "egress-via-firewall"
+  name                   = local.default_route_name
   resource_group_name    = var.rg_name
   route_table_name       = azurerm_route_table.afw_rt.name
   address_prefix         = "0.0.0.0/0"
@@ -52,54 +52,63 @@ resource "azurerm_subnet_route_table_association" "aks_snet_association" {
 }
 
 resource "azurerm_firewall_application_rule_collection" "app_rules" {
-  name                = "appRules"
+  name                = local.app_rule_collection_name
   azure_firewall_name = azurerm_firewall.afw.name
   resource_group_name = var.rg_name
   priority            = 100
   action              = "Allow"
 
-  rule {
-    name             = "AllowMicrosoftUpdates"
-    source_addresses = ["*"]
-    target_fqdns     = ["*.microsoft.com"]
+  dynamic "rule" {
+    for_each = local.app_rules
+    content {
+      name             = rule.value.name
+      source_addresses = rule.value.source_addresses
+      target_fqdns     = rule.value.target_fqdns
 
-    protocol {
-      port = 443
-      type = "Https"
+      protocol {
+        port = rule.value.port
+        type = rule.value.type
+      }
     }
   }
 }
 
 resource "azurerm_firewall_network_rule_collection" "net_rules" {
-  name                = "netRules"
+  name                = local.net_rule_collection_name
   azure_firewall_name = azurerm_firewall.afw.name
   resource_group_name = var.rg_name
   priority            = 200
   action              = "Allow"
 
-  rule {
-    name                  = "AllowDNS"
-    source_addresses      = ["*"]
-    destination_addresses = ["*"]
-    destination_ports     = ["53"]
-    protocols             = ["UDP"]
+  dynamic "rule" {
+    for_each = local.net_rules
+    content {
+      name                  = rule.value.name
+      source_addresses      = rule.value.source_addresses
+      destination_addresses = rule.value.destination_addresses
+      destination_ports     = rule.value.destination_ports
+      protocols             = rule.value.protocols
+    }
   }
 }
 
 resource "azurerm_firewall_nat_rule_collection" "nat_rules" {
-  name                = "natRules"
+  name                = local.nat_rule_collection_name
   azure_firewall_name = azurerm_firewall.afw.name
   resource_group_name = var.rg_name
   priority            = 300
   action              = "Dnat"
 
-  rule {
-    name                  = "nginx"
-    source_addresses      = ["*"]
-    destination_addresses = [azurerm_public_ip.afw_pip.ip_address]
-    destination_ports     = ["80"]
-    protocols             = ["TCP"]
-    translated_address    = var.aks_private_ip
-    translated_port       = 80
+  dynamic "rule" {
+    for_each = local.nat_rules
+    content {
+      name                  = rule.value.name
+      source_addresses      = rule.value.source_addresses
+      destination_addresses = rule.value.destination_addresses
+      destination_ports     = rule.value.destination_ports
+      protocols             = rule.value.protocols
+      translated_address    = rule.value.translated_address
+      translated_port       = rule.value.translated_port
+    }
   }
 }
