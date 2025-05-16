@@ -64,7 +64,6 @@ resource "azurerm_firewall_application_rule_collection" "app_rules" {
       name             = rule.value.name
       source_addresses = rule.value.source_addresses
       target_fqdns     = rule.value.target_fqdns
-
       protocol {
         port = rule.value.port
         type = rule.value.type
@@ -106,9 +105,9 @@ resource "azurerm_firewall_nat_rule_collection" "nat_rules" {
       source_addresses      = rule.value.source_addresses
       destination_addresses = rule.value.destination_addresses
       destination_ports     = rule.value.destination_ports
-      protocols             = rule.value.protocols
       translated_address    = rule.value.translated_address
       translated_port       = rule.value.translated_port
+      protocols             = rule.value.protocols
     }
   }
 }

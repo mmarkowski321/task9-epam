@@ -5,7 +5,7 @@ module "afw" {
   vnet_name           = var.vnet_name
   aks_subnet_id       = data.azurerm_subnet.aks_subnet.id
   aks_loadbalancer_ip = var.aks_loadbalancer_ip
-  aks_private_ip      = "10.0.0.10"
+  aks_private_ip      = var.aks_private_ip
 }
 
 data "azurerm_subnet" "aks_subnet" {

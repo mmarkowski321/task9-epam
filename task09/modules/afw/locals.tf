@@ -1,14 +1,14 @@
 locals {
   prefix = "cmtr-6bbc5609-mod9"
 
-  afw_name     = "${local.prefix}-afw"
-  afw_pip_name = "${local.prefix}-pip"
-  afw_rt_name  = "${local.prefix}-rt"
+  afw_name     = format("%s-afw", local.prefix)
+  afw_pip_name = format("%s-pip", local.prefix)
+  afw_rt_name  = format("%s-rt", local.prefix)
 
-  app_rule_collection_name = "${local.prefix}-app"
-  net_rule_collection_name = "${local.prefix}-net"
-  nat_rule_collection_name = "${local.prefix}-nat"
-  default_route_name       = "${local.prefix}-egress"
+  app_rule_collection_name = format("%s-app", local.prefix)
+  net_rule_collection_name = format("%s-net", local.prefix)
+  nat_rule_collection_name = format("%s-nat", local.prefix)
+  default_route_name       = format("%s-egress", local.prefix)
 
   app_rules = [
     {
