@@ -38,12 +38,12 @@ resource "azurerm_route_table" "afw_rt" {
 }
 
 resource "azurerm_route" "afw_default_route" {
-  name                    = "egress-via-firewall"
-  resource_group_name     = var.rg_name
-  route_table_name        = azurerm_route_table.afw_rt.name
-  address_prefix          = "0.0.0.0/0"
-  next_hop_type           = "VirtualAppliance"
-  next_hop_in_ip_address  = azurerm_firewall.afw.ip_configuration[0].private_ip_address
+  name                   = "egress-via-firewall"
+  resource_group_name    = var.rg_name
+  route_table_name       = azurerm_route_table.afw_rt.name
+  address_prefix         = "0.0.0.0/0"
+  next_hop_type          = "VirtualAppliance"
+  next_hop_in_ip_address = azurerm_firewall.afw.ip_configuration[0].private_ip_address
 }
 
 resource "azurerm_subnet_route_table_association" "aks_snet_association" {
