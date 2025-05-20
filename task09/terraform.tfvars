@@ -1,6 +1,3 @@
-location            = "East US"
-rg_name             = "cmtr-6bbc5609-mod9-rg"
-vnet_name           = "cmtr-6bbc5609-mod9-vnet"
 aks_subnet_name     = "aks-snet"
-aks_loadbalancer_ip = "51.8.39.168"
+aks_loadbalancer_ip = "172.212.55.182"
 aks_private_ip      = "10.0.0.10"

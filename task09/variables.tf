@@ -1,18 +1,3 @@
-variable "location" {
-  type        = string
-  description = "The Azure region where resources will be deployed."
-}
-
-variable "rg_name" {
-  type        = string
-  description = "The name of the existing resource group."
-}
-
-variable "vnet_name" {
-  type        = string
-  description = "The name of the existing virtual network."
-}
-
 variable "aks_subnet_name" {
   type        = string
   description = "The name of the existing AKS subnet."
