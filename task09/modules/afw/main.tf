@@ -103,9 +103,9 @@ resource "azurerm_firewall_nat_rule_collection" "nat_rules" {
     content {
       name                  = rule.value.name
       source_addresses      = rule.value.source_addresses
-      destination_addresses = [azurerm_public_ip.afw_pip.ip_address]
+      destination_addresses = rule.value.destination_addresses
       destination_ports     = rule.value.destination_ports
-      translated_address    = var.aks_private_ip
+      translated_address    = rule.value.translated_address
       translated_port       = rule.value.translated_port
       protocols             = rule.value.protocols
     }

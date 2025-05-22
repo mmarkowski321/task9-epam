@@ -33,11 +33,13 @@ locals {
 
   nat_rules = [
     {
-      name              = "nginx"
-      source_addresses  = ["*"]
-      destination_ports = ["80"]
-      translated_port   = 80
-      protocols         = ["TCP"]
+      name                  = "nginx"
+      source_addresses      = ["*"]
+      destination_ports     = ["80"]
+      translated_port       = 80
+      translated_address    = var.aks_private_ip
+      destination_addresses = var.aks_loadbalancer_ip
+      protocols             = ["TCP"]
     }
   ]
 }
