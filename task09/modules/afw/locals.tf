@@ -38,7 +38,7 @@ locals {
       destination_ports     = ["80"]
       translated_port       = 80
       translated_address    = var.aks_private_ip
-      destination_addresses = [var.aks_loadbalancer_ip]
+      destination_addresses = [azurerm_public_ip.afw_pip.ip_address]
       protocols             = ["TCP"]
     }
   ]
