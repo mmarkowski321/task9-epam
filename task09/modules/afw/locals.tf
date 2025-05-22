@@ -5,10 +5,11 @@ locals {
   afw_pip_name = format("%s-pip", local.prefix)
   afw_rt_name  = format("%s-rt", local.prefix)
 
-  app_rule_collection_name = format("%s-app", local.prefix)
-  net_rule_collection_name = format("%s-net", local.prefix)
-  nat_rule_collection_name = format("%s-nat", local.prefix)
-  default_route_name       = format("%s-egress", local.prefix)
+  app_rule_collection_name = "appRules"
+  net_rule_collection_name = "netRules"
+  nat_rule_collection_name = "natRules"
+  default_route_name       = "egress-via-firewall"
+
 
   app_rules = [
     {

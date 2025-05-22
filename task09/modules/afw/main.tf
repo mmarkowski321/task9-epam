@@ -101,9 +101,9 @@ resource "azurerm_firewall_nat_rule_collection" "nat_rules" {
   dynamic "rule" {
     for_each = local.nat_rules
     content {
-      name                  = format("%s-rule", rule.value.name)
+      name                  = rule.value.name
       source_addresses      = rule.value.source_addresses
-      destination_addresses = [var.aks_loadbalancer_ip]
+      destination_addresses = [azurerm_public_ip.afw_pip.ip_address]
       destination_ports     = rule.value.destination_ports
       translated_address    = var.aks_private_ip
       translated_port       = rule.value.translated_port
