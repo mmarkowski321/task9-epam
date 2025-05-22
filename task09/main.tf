@@ -1,11 +1,11 @@
 module "afw" {
-  source               = "./modules/afw"
-  location             = var.location
-  rg_name              = var.rg_name
-  vnet_name            = var.vnet_name
-  aks_subnet_id        = data.azurerm_subnet.aks_subnet.id
-  aks_loadbalancer_ip  = var.aks_loadbalancer_ip
-  aks_private_ip       = "10.0.0.10" 
+  source              = "./modules/afw"
+  location            = var.location
+  rg_name             = var.rg_name
+  vnet_name           = var.vnet_name
+  aks_subnet_id       = data.azurerm_subnet.aks_subnet.id
+  aks_loadbalancer_ip = var.aks_loadbalancer_ip
+  aks_private_ip      = "10.0.0.10"
 }
 
 data "azurerm_subnet" "aks_subnet" {
