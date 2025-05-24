@@ -1,6 +1,6 @@
 locals {
   prefix    = "cmtr-6bbc5609-mod9"
-  rg_name   = format("%s-rg", local.prefix)
-  vnet_name = format("%s-vnet", local.prefix)
+  rg_name   = "${local.prefix}-rg"
+  vnet_name = "${local.prefix}-vnet"
   location  = "East US"
 }

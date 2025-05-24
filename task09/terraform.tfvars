@@ -1,3 +1,3 @@
 aks_subnet_name     = "aks-snet"
-aks_loadbalancer_ip = "57.151.13.62"
+aks_loadbalancer_ip = "134.33.209.207"
 aks_private_ip      = "10.0.0.10"

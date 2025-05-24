@@ -1,4 +1,4 @@
-resource "azurerm_public_ip" "afw_pip" { 
+resource "azurerm_public_ip" "afw_pip" {
   name                = local.afw_pip_name
   location            = var.location
   resource_group_name = var.rg_name
@@ -10,14 +10,14 @@ resource "azurerm_public_ip" "afw_pip" {
   }
 }
 
-resource "azurerm_subnet" "afw_subnet" { 
+resource "azurerm_subnet" "afw_subnet" {
   name                 = "AzureFirewallSubnet"
   resource_group_name  = var.rg_name
   virtual_network_name = var.vnet_name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_firewall" "afw" { 
+resource "azurerm_firewall" "afw" {
   name                = local.afw_name
   location            = var.location
   resource_group_name = var.rg_name
@@ -31,13 +31,13 @@ resource "azurerm_firewall" "afw" {
   }
 }
 
-resource "azurerm_route_table" "afw_rt" { 
+resource "azurerm_route_table" "afw_rt" {
   name                = local.afw_rt_name
   location            = var.location
   resource_group_name = var.rg_name
 }
 
-resource "azurerm_route" "afw_default_route" { 
+resource "azurerm_route" "afw_default_route" {
   name                   = local.default_route_name
   resource_group_name    = var.rg_name
   route_table_name       = azurerm_route_table.afw_rt.name
@@ -46,12 +46,12 @@ resource "azurerm_route" "afw_default_route" {
   next_hop_in_ip_address = azurerm_firewall.afw.ip_configuration[0].private_ip_address
 }
 
-resource "azurerm_subnet_route_table_association" "aks_snet_association" { 
+resource "azurerm_subnet_route_table_association" "aks_snet_association" {
   subnet_id      = var.aks_subnet_id
   route_table_id = azurerm_route_table.afw_rt.id
 }
 
-resource "azurerm_firewall_application_rule_collection" "app_rules" { 
+resource "azurerm_firewall_application_rule_collection" "app_rules" {
   name                = local.app_rule_collection_name
   azure_firewall_name = azurerm_firewall.afw.name
   resource_group_name = var.rg_name
@@ -103,7 +103,7 @@ resource "azurerm_firewall_nat_rule_collection" "nat_rules" {
     content {
       name                  = rule.value.name
       source_addresses      = rule.value.source_addresses
-      destination_addresses = [azurerm_firewall.afw.ip_configuration[0].private_ip_address]
+      destination_addresses = [azurerm_public_ip.afw_pip.ip_address]
       destination_ports     = rule.value.destination_ports
       translated_address    = rule.value.translated_address
       translated_port       = rule.value.translated_port
