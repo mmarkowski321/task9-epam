@@ -37,7 +37,6 @@ locals {
       source_addresses   = ["*"]
       destination_ports  = ["80"]
       translated_port    = 80
-      destination_addresses = ["52.147.207.129"]
       translated_address = var.aks_private_ip
       protocols          = ["TCP"]
     }
