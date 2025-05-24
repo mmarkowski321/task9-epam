@@ -10,7 +10,6 @@ locals {
   nat_rule_collection_name = "natRules"
   default_route_name       = "egress-via-firewall"
 
-
   app_rules = [
     {
       name             = "AllowMicrosoftUpdates"
@@ -28,6 +27,13 @@ locals {
       destination_addresses = ["*"]
       destination_ports     = ["53"]
       protocols             = ["UDP"]
+    },
+    {
+      name                  = "AllowHTTP"
+      source_addresses      = ["*"]
+      destination_addresses = [var.aks_private_ip]
+      destination_ports     = ["80"]
+      protocols             = ["TCP"]
     }
   ]
 
