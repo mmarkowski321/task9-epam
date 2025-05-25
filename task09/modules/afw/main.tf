@@ -82,7 +82,7 @@ resource "azurerm_firewall_application_rule_collection" "app" {
     source_addresses = ["*"]
     target_fqdns     = local.app_rule_fqdns
 
-        protocol {
+    protocol {
       port = "80"
       type = "Http"
     }

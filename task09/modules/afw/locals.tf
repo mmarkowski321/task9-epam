@@ -1,10 +1,4 @@
 locals {
-  prefix       = "cmtr-6bbc5609-mod9"
-  afw_name     = "${local.prefix}-afw"
-  afw_pip_name = "${local.prefix}-pip"
-  afw_rt_name  = "${local.prefix}-rt"
-}
-locals {
   vnet          = data.azurerm_virtual_network.vnet
   app_rule_name = format("%s-allow-mcr", var.name_prefix)
   net_rule_name = format("%s-net", var.name_prefix)
@@ -28,7 +22,7 @@ locals {
     },
     {
       name                  = "AllowAKSEgress"
-      source_addresses      = ["10.0.0.0/16"] 
+      source_addresses      = ["10.0.0.0/16"]
       destination_addresses = ["*"]
       destination_ports     = ["*"]
       protocols             = ["Any"]
