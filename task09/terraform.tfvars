@@ -1,4 +1,4 @@
-name_prefix         = "cmtr-120c1730-mod9"
+name_prefix         = "cmtr-6bbc5609-mod9"
 aks_loadbalancer_ip = "48.216.195.2"
 aks_subnet_name     = "aks-snet"
 aks_subnet_prefix   = "10.0.0.0/24"
