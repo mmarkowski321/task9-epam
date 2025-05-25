@@ -59,7 +59,7 @@ resource "azurerm_route_table" "this" {
 
   route {
     name           = "AKSManagementRoute"
-    address_prefix = "AzureCloud.WestEurope"
+    address_prefix = "AzureCloud.EastUS"
     next_hop_type  = "Internet"
   }
 
