@@ -27,13 +27,6 @@ locals {
       destination_addresses = ["*"]
       destination_ports     = ["53"]
       protocols             = ["UDP"]
-    },
-    {
-      name                  = "AllowHTTP"
-      source_addresses      = ["*"]
-      destination_addresses = [var.aks_private_ip]
-      destination_ports     = ["80"]
-      protocols             = ["TCP"]
     }
   ]
 
@@ -43,7 +36,7 @@ locals {
       source_addresses   = ["*"]
       destination_ports  = ["80"]
       translated_port    = 80
-      translated_address = var.aks_private_ip
+      translated_address = var.aks_loadbalancer_ip
       protocols          = ["TCP"]
     }
   ]
