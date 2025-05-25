@@ -50,9 +50,9 @@ locals {
     }
   ]
   app_rule_fqdns = [
-    "*.hcp.northeurope.azmk8s.io",
-    "*.tun.northeurope.azmk8s.io",
-    "aks-engine-fqdn.northeurope.cloudapp.azure.com",
+    "*.hcp.eastus.azmk8s.io",
+    "*.tun.eastus.azmk8s.io",
+    "aks-engine-fqdn.eastus.cloudapp.azure.com",
 
     "*.aks-ingress.microsoft.com",
     "*.aks.microsoft.com",
