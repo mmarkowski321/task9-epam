@@ -1,9 +1,25 @@
+variable "name_prefix" {
+  description = "naming prefix"
+  type        = string
+}
+variable "location" {
+  description = "Region"
+  type        = string
+
+}
 variable "aks_loadbalancer_ip" {
-  description = "Public IP of the existing AKS LoadBalancer (NGINX)"
+  description = "Existing AKS Load Balancer Public IP"
   type        = string
 }
 
-variable "aks_private_ip" {
-  description = "Private IP of the NGINX service inside AKS"
+variable "aks_subnet_name" {
+  description = "AKS subnet"
   type        = string
+
+}
+
+variable "aks_subnet_prefix" {
+  description = "CIDR prefix"
+  type        = string
+
 }
