@@ -31,10 +31,11 @@ locals {
     {
       name                  = "AllowHTTP"
       source_addresses      = ["*"]
-      destination_addresses = [var.aks_loadbalancer_ip]
+      destination_addresses = [var.aks_private_ip]
       destination_ports     = ["80"]
       protocols             = ["TCP"]
     }
+
   ]
 
   nat_rules = [
