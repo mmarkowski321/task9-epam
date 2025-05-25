@@ -1,25 +1,26 @@
 variable "name_prefix" {
-  description = "naming prefix"
+  description = "Common prefix for naming resources"
   type        = string
 }
 variable "location" {
-  description = "Region"
+  description = "Azure region"
   type        = string
 
-}
-variable "aks_loadbalancer_ip" {
-  description = "Existing AKS Load Balancer Public IP"
-  type        = string
 }
 
 variable "aks_subnet_name" {
-  description = "AKS subnet"
+  description = "Name of the AKS subnet"
   type        = string
 
 }
 
 variable "aks_subnet_prefix" {
-  description = "CIDR prefix"
+  description = "CIDR prefix of the AKS subnet"
   type        = string
 
+}
+
+variable "aks_loadbalancer_ip" {
+  description = "Existing AKS Load Balancer Public IP"
+  type        = string
 }
